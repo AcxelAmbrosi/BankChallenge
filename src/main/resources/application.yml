@@ -1,0 +1,24 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://postgres:5432/bankdb
+    username: postgres
+    password: postgres
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework.r2dbc: DEBUG
+    com.bank: DEBUG
+
+server:
+  port: 8080
+
+spring doc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
