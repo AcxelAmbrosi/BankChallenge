@@ -1,9 +1,6 @@
 package com.challenge.bankAccount.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -14,5 +11,6 @@ import lombok.experimental.SuperBuilder;
 public class Customer extends Person {
     private Long id;
     private String password;
-    private Boolean status;
+    @Builder.Default
+    private Boolean status = true;
 }

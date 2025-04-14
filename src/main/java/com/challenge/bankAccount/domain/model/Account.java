@@ -17,7 +17,8 @@ public class Account {
     private String number;
     private AccountType type;
     private BigDecimal initialBalance;
-    private Boolean status;
+    @Builder.Default
+    private Boolean status = true;
     private Long customerId;
     private BigDecimal currentBalance;
 }

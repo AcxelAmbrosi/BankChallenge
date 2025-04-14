@@ -16,7 +16,8 @@ public class AccountDto {
     private String number;
     private String type;
     private BigDecimal initialBalance;
-    private boolean active;
+    @Builder.Default
+    private Boolean status = true;
     private Long customerId;
     private BigDecimal currentBalance;
 }

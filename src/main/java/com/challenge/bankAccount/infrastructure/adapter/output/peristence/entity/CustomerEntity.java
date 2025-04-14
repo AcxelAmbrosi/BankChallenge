@@ -1,11 +1,11 @@
 package com.challenge.bankAccount.infrastructure.adapter.output.peristence.entity;
 
-import com.challenge.bankAccount.domain.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -17,10 +17,12 @@ public class CustomerEntity {
     @Id
     private Long id;
     private String name;
-    private Gender gender;
+    private String gender;
     private String identification;
     private String address;
+    @Column("phone_number")
     private String phoneNumber;
     private String password;
-    private Boolean status;
+    @Builder.Default
+    private Boolean status = true;
 }

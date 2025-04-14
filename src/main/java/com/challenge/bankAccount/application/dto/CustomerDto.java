@@ -17,5 +17,6 @@ public class CustomerDto {
     private String address;
     private String phoneNumber;
     private String password;
-    private boolean active;
+    @Builder.Default
+    private Boolean status = true;
 }

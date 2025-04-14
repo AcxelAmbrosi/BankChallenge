@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "084a6c86-2043-4560-8acd-65190c7a7b50",
+		"name": "Banking API",
+		"description": "API bancaria para la gestión de clientes, cuentas y movimientos.\nImplementada con arquitectura hexagonal usando Spring WebFlux y R2DBC.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38402067"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Obtener todos los clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/customers"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear un nuevo cliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"John Doe\",\"gender\": \"MALE\",\"identification\": \"123456789\",\"address\": \"123 Main St\",\"phoneNumber\": \"1234567890\",\"password\": \"password123\"}"
+						},
+						"url": "http://localhost:8080/api/v1/customers"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cliente por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/customers/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar cliente",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"John Doe Updated\",\"gender\": \"MALE\",\"identification\": \"123456789\",\"address\": \"123 Updated St\",\"phoneNumber\": \"9876543210\",\"password\": \"newpassword123\"}"
+						},
+						"url": "http://localhost:8080/api/v1/customers/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/customers/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Obtener todas las cuentas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/accounts"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear una nueva cuenta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"number\": \"1234567890\",\"type\": \"SAVINGS\",\"initialBalance\": 1000.00,\"customerId\": 1}"
+						},
+						"url": "http://localhost:8080/api/v1/accounts"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cuenta por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/accounts/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar cuenta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"number\": \"1234567890\",\"type\": \"CHECKING\",\"initialBalance\": 5000.00,\"customerId\": 1}"
+						},
+						"url": "http://localhost:8080/api/v1/accounts/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar cuenta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/accounts/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimientos",
+			"item": [
+				{
+					"name": "Obtener todos los movimientos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/movements"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear un nuevo movimiento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"type\": \"CREDIT\",\"amount\": 200.00,\"accountId\": 1}"
+						},
+						"url": "http://localhost:8080/api/v1/movements"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener movimiento por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/movements/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar movimiento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/movements/1"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
