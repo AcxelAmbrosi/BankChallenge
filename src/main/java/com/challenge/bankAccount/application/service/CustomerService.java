@@ -28,7 +28,12 @@ public class CustomerService implements CustomerUseCase {
     public Mono<Customer> getCustomerById(Long id) {
         log.info("Getting customer with id: {}", id);
         return customerRepository.findById(id)
-                .switchIfEmpty(Mono.error(new NotFoundException("Customer not found with id: " + id)));
+                .switchIfEmpty(Mono.defer(() -> {
+                    log.warn("Customer not found with id: {}", id);
+                    return Mono.error(new NotFoundException("Customer not found with id: " + id));
+                }))
+                .doOnSuccess(exist -> log.info("Customer found with ID: {}", id))
+                .doOnError(e -> log.error("Error occurred while found customer: {}", e.getMessage(), e));
     }
 
     @Override
@@ -58,7 +63,7 @@ public class CustomerService implements CustomerUseCase {
                         customerRepository.findByIdentification(customer.getIdentification())
                                 .flatMap(duplicate -> {
                                     if (!duplicate.getId().equals(id)) {
-                                        log.warn("Duplicate identification detected for id: {}", customer.getIdentification());
+                                        log.warn("Duplicate identification detected: {}", customer.getIdentification());
                                         return Mono.error(new ConflictException("Identification already used by another customer"));
                                     }
                                     customer.setId(id);

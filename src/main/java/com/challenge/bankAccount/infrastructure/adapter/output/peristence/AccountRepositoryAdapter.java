@@ -40,4 +40,10 @@ public class AccountRepositoryAdapter implements AccountRepository {
     public Mono<Void> deleteById(Long id) {
         return repository.deleteById(id);
     }
+
+    @Override
+    public Mono<Account> findByNumber(String number) {
+        return repository.findByNumber(number)
+                .map(mapper::toDomain);
+    }
 }

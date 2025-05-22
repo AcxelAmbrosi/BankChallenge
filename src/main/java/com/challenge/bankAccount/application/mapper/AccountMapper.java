@@ -1,14 +1,19 @@
 package com.challenge.bankAccount.application.mapper;
 
-import com.challenge.bankAccount.application.dto.AccountDto;
+import com.challenge.bankAccount.application.dto.AccountCreateDto;
+import com.challenge.bankAccount.application.dto.AccountResponseDto;
 import com.challenge.bankAccount.domain.model.Account;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AccountTypeMapper.class)
 public interface AccountMapper {
-    AccountDto toDto(Account account);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "currentBalance", source = "initialBalance")
+    @Mapping(target = "status", constant = "true")
+    @Mapping(source = "type", target = "type", qualifiedByName = "stringToAccountType")
+    Account toDomain(AccountCreateDto dto);
 
-    Account toDomain(AccountDto dto);
-
+    @Mapping(source = "type", target = "type", qualifiedByName = "accountTypeToString")
+    AccountResponseDto toDto(Account account);
 }

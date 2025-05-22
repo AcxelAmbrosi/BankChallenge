@@ -12,4 +12,6 @@ public interface AccountRepository {
     Mono<Account> save(Account account);
 
     Mono<Void> deleteById(Long id);
+
+    Mono<Account> findByNumber(String number);
 }

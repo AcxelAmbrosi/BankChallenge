@@ -1,7 +1,8 @@
 package com.challenge.bankAccount.infrastructure.adapter.input;
 
 
-import com.challenge.bankAccount.application.dto.AccountDto;
+import com.challenge.bankAccount.application.dto.AccountCreateDto;
+import com.challenge.bankAccount.application.dto.AccountResponseDto;
 import com.challenge.bankAccount.application.mapper.AccountMapper;
 import com.challenge.bankAccount.application.ports.input.AccountUseCase;
 import jakarta.validation.Valid;
@@ -22,14 +23,14 @@ public class AccountController {
     private final AccountMapper mapper;
 
     @GetMapping
-    public Flux<AccountDto> getAllAccounts() {
+    public Flux<AccountResponseDto> getAllAccounts() {
         log.info("REST request to get all accounts");
         return accountUseCase.getAllAccounts()
                 .map(mapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public Mono<AccountDto> getAccountById(@PathVariable Long id) {
+    public Mono<AccountResponseDto> getAccountById(@PathVariable Long id) {
         log.info("REST request to get account by id: {}", id);
         return accountUseCase.getAccountById(id)
                 .map(mapper::toDto);
@@ -37,18 +38,18 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<AccountDto> createAccount(@Valid @RequestBody AccountDto accountDto) {
-        log.info("REST request to create account: {}", accountDto);
-        return Mono.just(accountDto)
+    public Mono<AccountResponseDto> createAccount(@Valid @RequestBody AccountCreateDto createDto) {
+        log.info("REST request to create account: {}", createDto);
+        return Mono.just(createDto)
                 .map(mapper::toDomain)
                 .flatMap(accountUseCase::createAccount)
                 .map(mapper::toDto);
     }
 
     @PutMapping("/{id}")
-    public Mono<AccountDto> updateAccount(@PathVariable Long id, @Valid @RequestBody AccountDto accountDto) {
+    public Mono<AccountResponseDto> updateAccount(@PathVariable Long id, @Valid @RequestBody AccountCreateDto updateDto) {
         log.info("REST request to update account with id: {}", id);
-        return Mono.just(accountDto)
+        return Mono.just(updateDto)
                 .map(mapper::toDomain)
                 .flatMap(account -> accountUseCase.updateAccount(id, account))
                 .map(mapper::toDto);
