@@ -30,12 +30,6 @@ public class AccountRepositoryAdapter implements AccountRepository {
     }
 
     @Override
-    public Mono<Account> findByNumber(String number) {
-        return repository.findByNumber(number)
-                .map(mapper::toDomain);
-    }
-
-    @Override
     public Mono<Account> save(Account account) {
         AccountEntity entity = mapper.toEntity(account);
         return repository.save(entity)

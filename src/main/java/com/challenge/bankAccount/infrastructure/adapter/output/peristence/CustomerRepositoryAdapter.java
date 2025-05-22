@@ -40,4 +40,9 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
     public Mono<Void> deleteById(Long id) {
         return repository.deleteById(id);
     }
+
+    @Override
+    public Mono<Customer> findByIdentification(String identification) {
+        return repository.findByIdentification(identification).map(mapper::toDomain);
+    }
 }

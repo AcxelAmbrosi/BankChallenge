@@ -12,4 +12,6 @@ public interface CustomerRepository {
     Mono<Customer> save(Customer customer);
 
     Mono<Void> deleteById(Long id);
+
+    Mono<Customer> findByIdentification(String identification);
 }

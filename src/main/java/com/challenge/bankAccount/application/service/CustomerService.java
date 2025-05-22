@@ -2,6 +2,7 @@ package com.challenge.bankAccount.application.service;
 
 import com.challenge.bankAccount.application.ports.input.CustomerUseCase;
 import com.challenge.bankAccount.application.ports.outputs.CustomerRepository;
+import com.challenge.bankAccount.domain.exception.ConflictException;
 import com.challenge.bankAccount.domain.exception.NotFoundException;
 import com.challenge.bankAccount.domain.model.Customer;
 import lombok.RequiredArgsConstructor;
@@ -33,25 +34,59 @@ public class CustomerService implements CustomerUseCase {
     @Override
     public Mono<Customer> createCustomer(Customer customer) {
         log.info("Creating customer: {}", customer);
-        return customerRepository.save(customer);
+
+        return customerRepository.findByIdentification(customer.getIdentification())
+                .flatMap(existing ->
+                {
+                    log.warn("Conflict: Customer already exists with identification: {}", customer.getIdentification());
+                    return Mono.<Customer>error(new ConflictException("Customer already exists with identification: " + customer.getIdentification()));
+                })
+                .switchIfEmpty(Mono.defer(() -> customerRepository.save(customer)
+                        .doOnSuccess(saved -> log.info("Customer successfully created with ID: {}", saved.getId()))
+                        .doOnError(e -> log.error("Error occurred while saving customer: {}", e.getMessage(), e))));
     }
 
     @Override
     public Mono<Customer> updateCustomer(Long id, Customer customer) {
         log.info("Updating customer with id: {}", id);
         return customerRepository.findById(id)
-                .switchIfEmpty(Mono.error(new NotFoundException("Customer not found with id: " + id)))
-                .flatMap(existingCustomer -> {
-                    customer.setId(id);
-                    return customerRepository.save(customer);
-                });
+                .switchIfEmpty(Mono.defer(() -> {
+                    log.warn("Customer not found with id: {}", id);
+                    return Mono.error(new NotFoundException("Customer not found with id: " + id));
+                }))
+                .flatMap(existingCustomer ->
+                        customerRepository.findByIdentification(customer.getIdentification())
+                                .flatMap(duplicate -> {
+                                    if (!duplicate.getId().equals(id)) {
+                                        log.warn("Duplicate identification detected for id: {}", customer.getIdentification());
+                                        return Mono.error(new ConflictException("Identification already used by another customer"));
+                                    }
+                                    customer.setId(id);
+                                    return customerRepository.save(customer)
+                                            .doOnSuccess(saved -> log.info("Customer updated successfully with id: {}", saved.getId()));
+                                })
+                                .switchIfEmpty(
+                                        Mono.defer(() -> {
+                                            customer.setId(id);
+                                            return customerRepository.save(customer)
+                                                    .doOnSuccess(saved -> log.info("Customer updated successfully with id: {}", saved.getId()));
+                                        })
+                                )
+                                .doOnError(e -> log.error("Failed to update customer with id: {}. Error: {}", id, e.getMessage(), e))
+                );
     }
 
     @Override
     public Mono<Void> deleteCustomer(Long id) {
         log.info("Deleting customer with id: {}", id);
         return customerRepository.findById(id)
-                .switchIfEmpty(Mono.error(new NotFoundException("Customer not found with id: " + id)))
-                .flatMap(customer -> customerRepository.deleteById(id));
+                .switchIfEmpty(Mono.defer(() ->
+                {
+                    log.warn("Customer not found with id: {}", id);
+                    return Mono.error(new NotFoundException("Customer not found with id: " + id));
+                }))
+                .flatMap(customer -> customerRepository.deleteById(id)
+                        .doOnSuccess(deleted -> log.info("Customer deleted successfully with id: {}", id)))
+                .doOnError(e -> log.error("Failed to delete customer with id: {}. Error: {}", id, e.getMessage(), e));
     }
 }

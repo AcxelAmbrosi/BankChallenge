@@ -1,6 +1,7 @@
 package com.challenge.bankAccount.infrastructure.adapter.input;
 
-import com.challenge.bankAccount.application.dto.CustomerDto;
+import com.challenge.bankAccount.application.dto.CustomerCreateDto;
+import com.challenge.bankAccount.application.dto.CustomerResponseDto;
 import com.challenge.bankAccount.application.mapper.CustomerMapper;
 import com.challenge.bankAccount.application.ports.input.CustomerUseCase;
 import jakarta.validation.Valid;
@@ -21,14 +22,14 @@ public class CustomerController {
     private final CustomerMapper mapper;
 
     @GetMapping
-    public Flux<CustomerDto> getAllCustomers() {
+    public Flux<CustomerResponseDto> getAllCustomers() {
         log.info("REST request to get all customers");
         return customerUseCase.getAllCustomers()
                 .map(mapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public Mono<CustomerDto> getCustomerById(@PathVariable Long id) {
+    public Mono<CustomerResponseDto> getCustomerById(@PathVariable Long id) {
         log.info("REST request to get customer by id: {}", id);
         return customerUseCase.getCustomerById(id)
                 .map(mapper::toDto);
@@ -36,18 +37,18 @@ public class CustomerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<CustomerDto> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
-        log.info("REST request to create customer: {}", customerDto);
-        return Mono.just(customerDto)
+    public Mono<CustomerResponseDto> createCustomer(@Valid @RequestBody CustomerCreateDto createDto) {
+        log.info("REST request to create customer: {}", createDto);
+        return Mono.just(createDto)
                 .map(mapper::toDomain)
                 .flatMap(customerUseCase::createCustomer)
                 .map(mapper::toDto);
     }
 
     @PutMapping("/{id}")
-    public Mono<CustomerDto> updateCustomer(@PathVariable Long id, @Valid @RequestBody CustomerDto customerDto) {
+    public Mono<CustomerResponseDto> updateCustomer(@PathVariable Long id, @Valid @RequestBody CustomerCreateDto updateDto) {
         log.info("REST request to update customer with id: {}", id);
-        return Mono.just(customerDto)
+        return Mono.just(updateDto)
                 .map(mapper::toDomain)
                 .flatMap(customer -> customerUseCase.updateCustomer(id, customer))
                 .map(mapper::toDto);

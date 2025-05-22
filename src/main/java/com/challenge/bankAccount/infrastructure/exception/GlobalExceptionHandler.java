@@ -1,5 +1,6 @@
 package com.challenge.bankAccount.infrastructure.exception;
 
+import com.challenge.bankAccount.domain.exception.ConflictException;
 import com.challenge.bankAccount.domain.exception.InsufficientBalanceException;
 import com.challenge.bankAccount.domain.exception.InvalidAmountException;
 import com.challenge.bankAccount.domain.exception.NotFoundException;
@@ -80,4 +81,17 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
+
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handleConflictException(ConflictException ex) {
+        log.error("Conflict: {}", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
 }

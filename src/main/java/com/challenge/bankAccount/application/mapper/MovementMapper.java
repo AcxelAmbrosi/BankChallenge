@@ -12,5 +12,4 @@ public interface MovementMapper {
 
     Movement toDomain(MovementDto dto);
 
-    void updateMovementFromDto(MovementDto dto, @MappingTarget Movement movement);
 }

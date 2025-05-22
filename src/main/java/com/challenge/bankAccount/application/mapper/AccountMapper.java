@@ -11,5 +11,4 @@ public interface AccountMapper {
 
     Account toDomain(AccountDto dto);
 
-    void updateAccountFromDto(AccountDto dto, @MappingTarget Account account);
 }
