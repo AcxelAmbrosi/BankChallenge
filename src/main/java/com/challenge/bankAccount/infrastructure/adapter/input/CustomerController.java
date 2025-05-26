@@ -1,7 +1,7 @@
 package com.challenge.bankAccount.infrastructure.adapter.input;
 
-import com.challenge.bankAccount.application.dto.CustomerCreateDto;
-import com.challenge.bankAccount.application.dto.CustomerResponseDto;
+import com.challenge.bankAccount.application.dto.customer.CustomerCreateDto;
+import com.challenge.bankAccount.application.dto.customer.CustomerResponseDto;
 import com.challenge.bankAccount.application.mapper.CustomerMapper;
 import com.challenge.bankAccount.application.ports.input.CustomerUseCase;
 import jakarta.validation.Valid;

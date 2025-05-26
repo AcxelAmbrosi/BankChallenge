@@ -1,6 +1,7 @@
 package com.challenge.bankAccount.infrastructure.adapter.input;
 
-import com.challenge.bankAccount.application.dto.MovementDto;
+import com.challenge.bankAccount.application.dto.movement.MovementCreateDto;
+import com.challenge.bankAccount.application.dto.movement.MovementResponseDto;
 import com.challenge.bankAccount.application.mapper.MovementMapper;
 import com.challenge.bankAccount.application.ports.input.MovementUseCase;
 import jakarta.validation.Valid;
@@ -21,14 +22,14 @@ public class MovementController {
     private final MovementMapper mapper;
 
     @GetMapping
-    public Flux<MovementDto> getAllMovements() {
+    public Flux<MovementResponseDto> getAllMovements() {
         log.info("REST request to get all movements");
         return movementUseCase.getAllMovements()
                 .map(mapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public Mono<MovementDto> getMovementById(@PathVariable Long id) {
+    public Mono<MovementResponseDto> getMovementById(@PathVariable Long id) {
         log.info("REST request to get movement by id: {}", id);
         return movementUseCase.getMovementById(id)
                 .map(mapper::toDto);
@@ -36,18 +37,18 @@ public class MovementController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<MovementDto> createMovement(@Valid @RequestBody MovementDto movementDto) {
-        log.info("REST request to create movement: {}", movementDto);
-        return Mono.just(movementDto)
+    public Mono<MovementResponseDto> createMovement(@Valid @RequestBody MovementCreateDto createDto) {
+        log.info("REST request to create movement: {}", createDto);
+        return Mono.just(createDto)
                 .map(mapper::toDomain)
                 .flatMap(movementUseCase::createMovement)
                 .map(mapper::toDto);
     }
 
     @PutMapping("/{id}")
-    public Mono<MovementDto> updateMovement(@PathVariable Long id, @Valid @RequestBody MovementDto movementDto) {
+    public Mono<MovementResponseDto> updateMovement(@PathVariable Long id, @Valid @RequestBody MovementCreateDto createDto) {
         log.info("REST request to update movement with id: {}", id);
-        return Mono.just(movementDto)
+        return Mono.just(createDto)
                 .map(mapper::toDomain)
                 .flatMap(movement -> movementUseCase.updateMovement(id, movement))
                 .map(mapper::toDto);

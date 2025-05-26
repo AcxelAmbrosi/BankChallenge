@@ -1,8 +1,9 @@
 package com.challenge.bankAccount.application.mapper;
 
 
-import com.challenge.bankAccount.application.dto.CustomerCreateDto;
-import com.challenge.bankAccount.application.dto.CustomerResponseDto;
+import com.challenge.bankAccount.application.dto.customer.CustomerCreateDto;
+import com.challenge.bankAccount.application.dto.customer.CustomerResponseDto;
+import com.challenge.bankAccount.application.mapper.common.GenderMapper;
 import com.challenge.bankAccount.domain.model.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
