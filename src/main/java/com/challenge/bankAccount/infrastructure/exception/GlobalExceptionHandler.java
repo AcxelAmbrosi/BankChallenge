@@ -1,9 +1,9 @@
 package com.challenge.bankAccount.infrastructure.exception;
 
-import com.challenge.bankAccount.domain.exception.ConflictException;
-import com.challenge.bankAccount.domain.exception.InsufficientBalanceException;
-import com.challenge.bankAccount.domain.exception.InvalidAmountException;
-import com.challenge.bankAccount.domain.exception.NotFoundException;
+import com.challenge.bankAccount.domain.exceptions.ConflictException;
+import com.challenge.bankAccount.domain.exceptions.InsufficientBalanceException;
+import com.challenge.bankAccount.domain.exceptions.InvalidAmountException;
+import com.challenge.bankAccount.domain.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
