@@ -1,9 +1,13 @@
 package com.challenge.bankAccount.infrastructure.adapters.driver.web.controllers;
 
+import com.challenge.bankAccount.domain.exceptions.NotFoundException;
+import com.challenge.bankAccount.domain.models.Movement;
+import com.challenge.bankAccount.domain.ports.driven.AccountRepository;
+import com.challenge.bankAccount.domain.ports.driver.MovementServicePort;
 import com.challenge.bankAccount.infrastructure.adapters.driver.web.dtos.movement.MovementCreateDto;
 import com.challenge.bankAccount.infrastructure.adapters.driver.web.dtos.movement.MovementResponseDto;
 import com.challenge.bankAccount.infrastructure.adapters.driver.web.mappers.MovementMapper;
-import com.challenge.bankAccount.domain.ports.driver.MovementServicePort;
+import com.challenge.bankAccount.infrastructure.adapters.driver.web.mappers.common.MovementTypeMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +25,7 @@ import reactor.core.publisher.Mono;
 public class MovementController {
 
     private final MovementServicePort movementServicePort;
+    private final AccountRepository accountRepository;
     private final MovementMapper mapper;
 
     @GetMapping
@@ -39,8 +46,15 @@ public class MovementController {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<MovementResponseDto> createMovement(@Valid @RequestBody MovementCreateDto createDto) {
         log.info("REST request to create movement: {}", createDto);
-        return Mono.just(createDto)
-                .map(mapper::toDomain)
+        return accountRepository.findByNumber(createDto.getNumber())
+                .switchIfEmpty(Mono.error(new NotFoundException("Account not found with number: " + createDto.getNumber())))
+                .map(account ->
+                        Movement.builder()
+                                .type(MovementTypeMapper.stringToMovementType(createDto.getType()))
+                                .amount(createDto.getAmount())
+                                .accountId(account.getId())
+                                .date(LocalDateTime.now())
+                                .build())
                 .flatMap(movementServicePort::createMovement)
                 .map(mapper::toDto);
     }

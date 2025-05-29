@@ -1,13 +1,13 @@
 package com.challenge.bankAccount.application.usecases;
 
-import com.challenge.bankAccount.domain.ports.driver.MovementServicePort;
-import com.challenge.bankAccount.domain.ports.driven.AccountRepository;
-import com.challenge.bankAccount.domain.ports.driven.MovementRepository;
 import com.challenge.bankAccount.domain.enums.MovementType;
 import com.challenge.bankAccount.domain.exceptions.InsufficientBalanceException;
 import com.challenge.bankAccount.domain.exceptions.InvalidAmountException;
 import com.challenge.bankAccount.domain.exceptions.NotFoundException;
 import com.challenge.bankAccount.domain.models.Movement;
+import com.challenge.bankAccount.domain.ports.driven.AccountRepository;
+import com.challenge.bankAccount.domain.ports.driven.MovementRepository;
+import com.challenge.bankAccount.domain.ports.driver.MovementServicePort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

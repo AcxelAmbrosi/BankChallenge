@@ -14,8 +14,5 @@ public interface MovementServicePort {
     Mono<Movement> updateMovement(Long id, Movement movement);
 
     Mono<Void> deleteMovement(Long id);
-//
-//    Mono<Movement> makeDeposit(Long accountId, BigDecimal amount);
-//
-//    Mono<Movement> makeWithdrawal(Long accountId, BigDecimal amount);
+
 }

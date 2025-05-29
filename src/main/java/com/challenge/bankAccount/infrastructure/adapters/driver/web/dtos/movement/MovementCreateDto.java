@@ -24,6 +24,7 @@ public class MovementCreateDto {
     @DecimalMin(value = "0.00", inclusive = false, message = "Amount must be at least 0.00")
     @Digits(integer = 10, fraction = 2, message = "Amount must have up to 2 decimal places")
     private BigDecimal amount;
-    @NotNull(message = "Account ID is required")
-    private Long accountId;
+    @NotBlank(message = "Account number is required")
+    @Size(min = 5, max = 20, message = "Account number must be between 5 and 20 characters")
+    private String number;
 }
