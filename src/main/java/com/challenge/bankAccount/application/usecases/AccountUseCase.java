@@ -1,7 +1,7 @@
 package com.challenge.bankAccount.application.usecases;
 
-import com.challenge.bankAccount.domain.ports.driver.AccountServicePort;
-import com.challenge.bankAccount.domain.ports.driven.AccountRepository;
+import com.challenge.bankAccount.domain.ports.input.AccountServicePort;
+import com.challenge.bankAccount.domain.ports.output.AccountRepository;
 import com.challenge.bankAccount.domain.exceptions.ConflictException;
 import com.challenge.bankAccount.domain.exceptions.NotFoundException;
 import com.challenge.bankAccount.domain.models.Account;
