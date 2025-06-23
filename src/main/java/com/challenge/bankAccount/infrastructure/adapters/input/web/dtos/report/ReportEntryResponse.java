@@ -13,13 +13,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportEntryResponse {
-    private LocalDateTime fecha;
-    private String cliente;
-    private String numeroCuenta;
-    private String tipoCuenta;
-    private BigDecimal saldoInicialCuenta;
-    private Boolean estadoCuenta;
-    private BigDecimal valorMovimiento;
-    private String tipoMovimiento;
-    private BigDecimal saldoDisponible;
+    private LocalDateTime date;
+    private String customer;
+    private String accountNumber;
+    private String accountType;
+    private BigDecimal initialAccountBalance;
+    private Boolean accountStatus;
+    private BigDecimal movementAmount;
+    private String movementType;
+    private BigDecimal availableBalance;
+
 }
